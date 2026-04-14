@@ -8,6 +8,7 @@ RUN_ROOT="${RUN_ROOT:-${SCRIPT_DIR}/runs/${TIMESTAMP}}"
 IMAGE_TAG="${IMAGE_TAG:-ghcr.io/dingp/pynamic-py3-podman-hpc:1.3.4}"
 PODMAN_HPC_BIN="${PODMAN_HPC_BIN:-podman-hpc}"
 SQUASHFUSE_MOUNT_PROGRAM="${SQUASHFUSE_MOUNT_PROGRAM:-${SCRIPT_DIR}/fuse-overlayfs-wrap-squashfuse-ll}"
+SQUASHFUSE_LL_BIN="${SQUASHFUSE_LL_BIN:-}"
 PYNAMIC_COMMAND="${PYNAMIC_COMMAND:-./pynamic-mpi4py pynamic_driver_mpi4py.py 1}"
 
 mkdir -p "${RUN_ROOT}"
@@ -26,10 +27,14 @@ run_variant() {
         if [[ -n "${mount_program}" ]]; then
             echo "PODMANHPC_MOUNT_PROGRAM=${mount_program}"
         fi
+        if [[ -n "${SQUASHFUSE_LL_BIN}" ]]; then
+            echo "SQUASHFUSE_LL_BIN=${SQUASHFUSE_LL_BIN}"
+        fi
     } > "${variant_dir}/env.txt"
 
     if [[ -n "${mount_program}" ]]; then
         PODMANHPC_MOUNT_PROGRAM="${mount_program}" \
+        SQUASHFUSE_LL_BIN="${SQUASHFUSE_LL_BIN}" \
             "${PODMAN_HPC_BIN}" run --rm "${IMAGE_TAG}" \
             /bin/bash -lc "${PYNAMIC_COMMAND}" \
             > "${variant_dir}/stdout.log" 2> "${variant_dir}/stderr.log"

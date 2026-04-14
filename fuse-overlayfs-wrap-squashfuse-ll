@@ -6,7 +6,16 @@ LOG="${LOG:-/dev/null}"
 UMOUNT_WAIT_RETRIES="${UMOUNT_WAIT_RETRIES:-5}"
 UMOUNT_WAIT_DELAY="${UMOUNT_WAIT_DELAY:-1}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SQUASHFUSE_LL_BIN="${SQUASHFUSE_LL_BIN:-${SCRIPT_DIR}/install_squashfuse_ll/squashfuse_ll}"
+DEFAULT_SQUASHFUSE_LL_BIN="${SCRIPT_DIR}/install_squashfuse_ll/squashfuse_ll"
+if [[ -n "${SQUASHFUSE_LL_BIN:-}" ]]; then
+    :
+elif [[ -x "${DEFAULT_SQUASHFUSE_LL_BIN}" ]]; then
+    SQUASHFUSE_LL_BIN="${DEFAULT_SQUASHFUSE_LL_BIN}"
+elif command -v squashfuse_ll >/dev/null 2>&1; then
+    SQUASHFUSE_LL_BIN="$(command -v squashfuse_ll)"
+else
+    SQUASHFUSE_LL_BIN="${DEFAULT_SQUASHFUSE_LL_BIN}"
+fi
 FUSE_OVERLAYFS_BIN="${FUSE_OVERLAYFS_BIN:-/usr/bin/fuse-overlayfs}"
 
 if [[ "${1:-}" == "wait" ]]; then
@@ -29,7 +38,16 @@ F="$(echo "${ARGS}" | sed 's/,upperdir.*//' | sed 's/.*lowerdir=//' | sed 's/.*:
 echo "In fow ${F}.squash" >> "${LOG}"
 if [[ -e "${F}.squash" ]]; then
     echo "Mount squash ${F} with ${SQUASHFUSE_LL_BIN}" >> "${LOG}"
+    if [[ ! -x "${SQUASHFUSE_LL_BIN}" ]]; then
+        echo "squashfuse_ll binary not found or not executable: ${SQUASHFUSE_LL_BIN}" >> "${LOG}"
+        exit 127
+    fi
     "${SQUASHFUSE_LL_BIN}" "${F}.squash" "${F}" >> "${LOG}" 2>&1
+    RET=$?
+    if [[ ${RET} -ne 0 ]]; then
+        echo "squashfuse_ll mount failed with exit code ${RET}" >> "${LOG}"
+        exit "${RET}"
+    fi
 fi
 
 "${FUSE_OVERLAYFS_BIN}" "$@" >> "${LOG}" 2>&1
