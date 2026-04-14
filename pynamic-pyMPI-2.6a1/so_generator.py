@@ -242,6 +242,41 @@ def compile_file(file_prefix, num_module_files, num_utility_files, include_dir, 
     command += ' -I%s' %(include_dir)
     run_command(command)
 
+def generate_module_begin_file():
+    filename = 'libmodulebegin.c'
+    f = open(filename, 'w')
+    f.write('#include <Python.h>\n\n')
+    f.write('static volatile int v;\n\n')
+    f.write('void begin_break_here()\n{\n')
+    f.write('    v++;\n')
+    f.write('}\n\n')
+    f.write('static PyObject *py_libmodulebegin_break_here(PyObject *self, PyObject *args)\n{\n')
+    f.write('    begin_break_here();\n')
+    f.write('    Py_RETURN_NONE;\n')
+    f.write('}\n\n')
+    f.write('static PyMethodDef libmodulebegin_importMethods[] = {\n')
+    f.write('    {"begin_break_here", py_libmodulebegin_break_here, METH_VARARGS, "a function."},\n')
+    f.write('    {NULL, NULL, 0, NULL}\n')
+    f.write('};\n\n')
+    if sys.version_info.major == 2:
+        f.write('void initlibmodulebegin()\n')
+        f.write('{\n')
+        f.write('   Py_InitModule("libmodulebegin", libmodulebegin_importMethods);\n')
+        f.write('}\n')
+    else:
+        f.write('PyMODINIT_FUNC PyInit_libmodulebegin()\n')
+        f.write('{\n')
+        f.write('   static struct PyModuleDef beginmodule = {\n')
+        f.write('      PyModuleDef_HEAD_INIT,\n')
+        f.write('      "libmodulebegin",\n')
+        f.write('      "",\n')
+        f.write('      -1,\n')
+        f.write('      libmodulebegin_importMethods\n')
+        f.write('   };\n')
+        f.write('   return PyModule_Create(&beginmodule);\n')
+        f.write('}\n')
+    f.close()
+
 #create a python driver file
 def create_driver(num_files, filename, mpi_wrapper_text):
     f = open(filename, "w")
@@ -415,6 +450,7 @@ def run_so_generator(num_files, avg_num_functions, call_depth, extern, seed, see
     command = 'ranlib libpynamic.a'
     run_command(command)
 
+    generate_module_begin_file()
     compile_file("libmodulebegin", num_files - num_utility_files, 0, include_dir, CC)
     command = 'ar cru libpynamic.a libmodulebegin.o'
     run_command(command)
