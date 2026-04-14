@@ -15,11 +15,11 @@ The benchmark command used by the runner is:
 
 The runner script is:
 
-- [run-pynamic-podman-hpc.sh](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/run-pynamic-podman-hpc.sh)
+- [run-pynamic-podman-hpc.sh](./run-pynamic-podman-hpc.sh)
 
 The image build script is:
 
-- [build-pynamic-image.sh](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/build-pynamic-image.sh)
+- [build-pynamic-image.sh](./build-pynamic-image.sh)
 
 ## Local Image Note
 
@@ -36,12 +36,12 @@ This ensures the migrated squashed image is the one used by `podman-hpc` during 
 
 The custom wrapper is:
 
-- [fuse-overlayfs-wrap-squashfuse-ll](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/fuse-overlayfs-wrap-squashfuse-ll)
+- [fuse-overlayfs-wrap-squashfuse-ll](./fuse-overlayfs-wrap-squashfuse-ll)
 
 For reliable benchmark runs, pass the binary path explicitly:
 
 ```bash
-SQUASHFUSE_LL_BIN=/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/install_squashfuse_ll/squashfuse_ll
+SQUASHFUSE_LL_BIN=/path/to/squashfuse_ll
 ```
 
 ## Image Configurations
@@ -98,7 +98,7 @@ There are also `20` `libutilityN` shared libraries linked beneath the modules, b
 
 ```bash
 ./build-pynamic-image.sh
-SQUASHFUSE_LL_BIN=/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/install_squashfuse_ll/squashfuse_ll \
+SQUASHFUSE_LL_BIN=/path/to/squashfuse_ll \
 ./run-pynamic-podman-hpc.sh
 ```
 
@@ -109,7 +109,7 @@ PYDYNAMIC_CONFIG_ARGS="100 100 --with-mpi4py --with-cc=mpicc -u 20 20 -s 42" \
 ./build-pynamic-image.sh
 
 IMAGE_TAG=ghcr.io/dingp/pynamic-py3-podman-hpc:1.3.4-100-100---with-mpi4py---with-ccmpicc--u-20-20--s-42 \
-SQUASHFUSE_LL_BIN=/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/install_squashfuse_ll/squashfuse_ll \
+SQUASHFUSE_LL_BIN=/path/to/squashfuse_ll \
 ./run-pynamic-podman-hpc.sh
 ```
 
@@ -119,7 +119,7 @@ SQUASHFUSE_LL_BIN=/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/install_squashfu
 
 Run:
 
-- [20260414T040655Z](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T040655Z)
+- [20260414T040655Z](./runs/20260414T040655Z)
 
 Results:
 
@@ -132,12 +132,12 @@ Results:
 
 Logs:
 
-- [baseline stdout](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T040655Z/baseline/stdout.log)
-- [squashfuse_ll stdout](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T040655Z/squashfuse_ll/stdout.log)
+- [baseline stdout](./runs/20260414T040655Z/baseline/stdout.log)
+- [squashfuse_ll stdout](./runs/20260414T040655Z/squashfuse_ll/stdout.log)
 
 Run:
 
-- [20260414T041608Z](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T041608Z)
+- [20260414T041608Z](./runs/20260414T041608Z)
 
 Results:
 
@@ -150,14 +150,14 @@ Results:
 
 Logs:
 
-- [baseline stdout](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T041608Z/baseline/stdout.log)
-- [squashfuse_ll stdout](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T041608Z/squashfuse_ll/stdout.log)
+- [baseline stdout](./runs/20260414T041608Z/baseline/stdout.log)
+- [squashfuse_ll stdout](./runs/20260414T041608Z/squashfuse_ll/stdout.log)
 
 ### 10x scale-up run
 
 Run:
 
-- [20260414T042505Z](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z)
+- [20260414T042505Z](./runs/20260414T042505Z)
 
 Image:
 
@@ -179,8 +179,8 @@ Results:
 
 Logs:
 
-- [baseline stdout](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z/baseline/stdout.log)
-- [squashfuse_ll stdout](/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z/squashfuse_ll/stdout.log)
+- [baseline stdout](./runs/20260414T042505Z/baseline/stdout.log)
+- [squashfuse_ll stdout](./runs/20260414T042505Z/squashfuse_ll/stdout.log)
 
 ## Summary
 

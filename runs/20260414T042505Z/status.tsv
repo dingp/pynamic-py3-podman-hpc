@@ -1,0 +1,3 @@
+variant	stdout	stderr
+baseline	/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z/baseline/stdout.log	/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z/baseline/stderr.log
+squashfuse_ll	/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z/squashfuse_ll/stdout.log	/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/pynamic-py3-podman-hpc/runs/20260414T042505Z/squashfuse_ll/stderr.log
