@@ -1,0 +1,53 @@
+name: Build pynamic image
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - "v*"
+    paths:
+      - "Containerfile"
+      - "pynamic-pyMPI-2.6a1/**"
+      - "build-squashfuse-0.6.1.sh"
+      - "fuse-overlayfs-wrap-squashfuse-ll"
+      - "run-pynamic-podman-hpc.sh"
+      - ".github/workflows/build-image.yaml"
+  workflow_dispatch:
+
+jobs:
+  build_and_push_image:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v6
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/dingp/pynamic-py3-podman-hpc
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=1.3.4
+            type=ref,event=tag
+            type=sha
+
+      - name: Build and push image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Containerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
