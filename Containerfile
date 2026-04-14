@@ -3,6 +3,7 @@ FROM ghcr.io/dingp/test-mpi-images:ubuntu-24.04-cuda-13.2.0-cudnn
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG PYDYNAMIC_CONFIG_ARGS="100 100 --with-mpi4py --with-cc=mpicc -u 20 20 -s 42"
 
 ENV PYDYNAMIC_ROOT=/opt/pynamic \
     PYDYNAMIC_SRC=/opt/pynamic/pynamic-pyMPI-2.6a1
@@ -17,7 +18,7 @@ COPY . ${PYDYNAMIC_ROOT}
 
 WORKDIR ${PYDYNAMIC_SRC}
 
-RUN python3 config_pynamic.py 10 10 --with-mpi4py --with-cc=mpicc -u 2 2 -s 42 && \
+RUN python3 config_pynamic.py ${PYDYNAMIC_CONFIG_ARGS} && \
     test -x pynamic-mpi4py && \
     test -f pynamic_driver_mpi4py.py
 
