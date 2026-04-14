@@ -11,7 +11,19 @@ This repository packages:
 ## Build the pynamic image
 
 ```bash
-podman-hpc build -f Containerfile -t localhost/pynamic:1.3.4 .
+./build-pynamic-image.sh
+```
+
+By default this builds:
+
+```bash
+ghcr.io/dingp/pynamic-py3-podman-hpc:1.3.4
+```
+
+If you want a different image tag:
+
+```bash
+IMAGE_TAG=localhost/pynamic:1.3.4 ./build-pynamic-image.sh
 ```
 
 ## Build and install squashfuse_ll
@@ -66,9 +78,10 @@ podman-hpc run --rm localhost/pynamic:1.3.4 python3 pynamic_driver_mpi4py.py 1
 
 This script:
 
-- builds `localhost/pynamic:1.3.4`
 - runs a baseline `podman-hpc` execution
 - runs a `squashfuse_ll` execution using the repository-local `fuse-overlayfs-wrap-squashfuse-ll`
+
+Build the image first with `./build-pynamic-image.sh`, or point the runner at an existing image with `IMAGE_TAG=...`.
 
 Artifacts are written under `runs/<timestamp>/`.
 
