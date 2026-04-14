@@ -8,7 +8,7 @@ RUN_ROOT="${RUN_ROOT:-${SCRIPT_DIR}/runs/${TIMESTAMP}}"
 IMAGE_TAG="${IMAGE_TAG:-localhost/pynamic:1.3.4}"
 CONTAINERFILE="${CONTAINERFILE:-${SCRIPT_DIR}/Containerfile}"
 PODMAN_HPC_BIN="${PODMAN_HPC_BIN:-podman-hpc}"
-SQUASHFUSE_MOUNT_PROGRAM="${SQUASHFUSE_MOUNT_PROGRAM:-/global/cfs/cdirs/nstaff/dingpf/squashfuse_ll/fuse-overlayfs-wrap-squashfuse-ll}"
+SQUASHFUSE_MOUNT_PROGRAM="${SQUASHFUSE_MOUNT_PROGRAM:-${SCRIPT_DIR}/fuse-overlayfs-wrap-squashfuse-ll}"
 PYNAMIC_COMMAND="${PYNAMIC_COMMAND:-./pynamic-mpi4py pynamic_driver_mpi4py.py 1}"
 
 mkdir -p "${RUN_ROOT}"
