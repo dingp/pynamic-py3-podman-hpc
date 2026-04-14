@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 TIMESTAMP=$(date -u +%Y%m%dT%H%M%SZ)
 RUN_ROOT="${RUN_ROOT:-${SCRIPT_DIR}/runs/${TIMESTAMP}}"
 
-IMAGE_TAG="${IMAGE_TAG:-localhost/pynamic:1.3.4}"
+IMAGE_TAG="${IMAGE_TAG:-ghcr.io/dingp/pynamic-py3-podman-hpc:1.3.4}"
 CONTAINERFILE="${CONTAINERFILE:-${SCRIPT_DIR}/Containerfile}"
 PODMAN_HPC_BIN="${PODMAN_HPC_BIN:-podman-hpc}"
 SQUASHFUSE_MOUNT_PROGRAM="${SQUASHFUSE_MOUNT_PROGRAM:-${SCRIPT_DIR}/fuse-overlayfs-wrap-squashfuse-ll}"
